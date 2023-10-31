@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+import Meal from "./Meal";
+import styles from "./Meals.module.css";
+
 export default function Meals() {
   const [meals, setMeals] = useState(null);
 
@@ -22,6 +25,9 @@ export default function Meals() {
   }, []);
 
   return (
-    <div id="meals">{meals && meals.map((meal) => <li>{meal.name}</li>)}</div>
+    // <div id="meals">{meals && meals.map((meal) => <li>{meal.name}</li>)}</div>
+    <ul id={styles.meals}>
+      {meals && meals.map((meal) => <Meal key={meal.id} meal={meal} />)}
+    </ul>
   );
 }
