@@ -1,5 +1,7 @@
 import { createContext, useReducer } from "react";
 
+// Create the context we wish to provide to the rest of the app.
+// We enter the intitial/default context which is received when the app starts.
 const CartContext = createContext({
   items: [],
   addItem: (item) => {},
@@ -9,13 +11,12 @@ const CartContext = createContext({
 // code to actually manage our state
 function cartReducer(state, action) {
   if (action.type === "ADD_ITEM_TO_CART") {
-    const existingItemIndex = state.items.findIndex((item) => {
-      item.id === action.item.id;
-    });
+    const existingItemIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
 
     // We will be replacing the items array with updatedItems
     const updatedItems = [...state.items];
-
     if (existingItemIndex > -1) {
       // Item exists
       const existingItem = state.items[existingItemIndex];
@@ -24,9 +25,15 @@ function cartReducer(state, action) {
         quantity: existingItem.quantity + 1,
       };
       updatedItems[existingItemIndex] = updatedItem;
-    } else {
+    }
+    if (existingItemIndex === -1) {
       // Item does not exist
-      updatedItems.push(action.item);
+      const newItem = {
+        ...action.item,
+        quantity: 1,
+      };
+      // updatedItems.push(newItem);
+      updatedItems.push({ ...action.item, quantity: 1 });
     }
 
     return {
@@ -35,9 +42,9 @@ function cartReducer(state, action) {
     };
   }
   if (action.type === "REMOVE_ITEM_FROM_CART") {
-    const existingItemIndex = state.items.findIndex((item) => {
-      item.id === action.id;
-    });
+    const existingItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
 
     // We will be replacing the items array with updatedItems
     // to keep the current state immutable
@@ -66,9 +73,20 @@ function cartReducer(state, action) {
 }
 
 export function CartContextProvider({ children }) {
-  useReducer(cartReducer, { items: [] });
+  const [cart, dispatchCartAction] = useReducer(cartReducer, { items: [] });
+  const cartContext = { items: cart.items, addItem, removeItem };
 
-  return <CartContext.Provider>{children}</CartContext.Provider>;
+  function addItem(item) {
+    dispatchCartAction({ type: "ADD_ITEM_TO_CART", item });
+  }
+
+  function removeItem(id) {
+    dispatchCartAction({ type: "REMOVE_ITEM_FROM_CART", id });
+  }
+
+  return (
+    <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
+  );
 }
 
 export default CartContext;
