@@ -17,6 +17,10 @@ const Cart = (props) => {
     0
   );
 
+  function hideCartHandler() {
+    userProgressCtx.hideCart();
+  }
+
   return (
     <Modal className="cart" open={userProgressCtx.progress === "cart"}>
       <h2>Your Cart</h2>
@@ -29,12 +33,12 @@ const Cart = (props) => {
           );
         })}
       </ul>
-      <p className="cart-total">
-        {priceFormatter.format(cartTotalPrice)}
-      </p>
+      <p className="cart-total">{priceFormatter.format(cartTotalPrice)}</p>
       <p className="modal-actions">
-        <Button textButton>Close</Button>
-        <Button>To Checkout</Button>
+        <Button textButton onClick={hideCartHandler}>
+          Close
+        </Button>
+        <Button onClick={hideCartHandler}>To Checkout</Button>
       </p>
     </Modal>
   );
