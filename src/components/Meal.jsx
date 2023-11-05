@@ -1,8 +1,16 @@
 import { priceFormatter } from "../util/priceFormatter";
 import Button from "./UI/Button";
+import { useContext } from "react";
+import CartContext from "../store/CartContext";
+
 import styles from "./Meal.module.css";
 
 export default function Meal({ meal }) {
+  let cartCtx = useContext(CartContext);
+  const addToCartHandler = (quantity) => {
+    cartCtx.addItem(meal);
+  };
+
   return (
     <li className={styles["meal-item"]}>
       <article>
@@ -15,7 +23,7 @@ export default function Meal({ meal }) {
           <p className={styles["meal-item-description"]}>{meal.description}</p>
         </div>
         <p className={styles["meal-item-actions"]}>
-          <Button>Add to Cart</Button>
+          <Button onClick={addToCartHandler}>Add to Cart</Button>
         </p>
       </article>
     </li>
