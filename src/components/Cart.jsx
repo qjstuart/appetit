@@ -35,7 +35,9 @@ const Cart = (props) => {
         <Button textButton onClick={hideCartHandler}>
           Close
         </Button>
-        <Button onClick={hideCartHandler}>To Checkout</Button>
+        {cartCtx.items.length > 0 && (
+          <Button onClick={hideCartHandler}>To Checkout</Button>
+        )}
       </p>
     </Modal>
   );
