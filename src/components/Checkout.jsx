@@ -16,8 +16,15 @@ export default function Checkout() {
     0
   );
 
+  function hideCheckoutHandler() {
+    userProgressCtx.hideCheckout();
+  }
+
   return (
-    <Modal open={userProgressCtx.progress === "checkout"}>
+    <Modal
+      open={userProgressCtx.progress === "checkout"}
+      onClose={hideCheckoutHandler}
+    >
       <form>
         <h2>Checkout</h2>
         <p>Total Amount: {priceFormatter.format(cartTotalPrice)}</p>
