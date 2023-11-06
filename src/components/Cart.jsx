@@ -22,6 +22,10 @@ const Cart = (props) => {
     userProgressCtx.hideCart();
   }
 
+  function toCheckoutHandler() {
+    userProgressCtx.showCheckout();
+  }
+
   return (
     <Modal className="cart" open={userProgressCtx.progress === "cart"}>
       <h2>Your Cart</h2>
@@ -36,7 +40,7 @@ const Cart = (props) => {
           Close
         </Button>
         {cartCtx.items.length > 0 && (
-          <Button onClick={hideCartHandler}>To Checkout</Button>
+          <Button onClick={toCheckoutHandler}>To Checkout</Button>
         )}
       </p>
     </Modal>
