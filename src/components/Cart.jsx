@@ -1,9 +1,10 @@
 import CartContext from "../store/CartContext";
 import { useContext } from "react";
 
+import CartItem from "./CartItem";
 import Modal from "./UI/Modal";
 import { priceFormatter } from "../util/priceFormatter";
-// import styles from "./Cart.module.css";
+
 import Button from "./UI/Button";
 import UserProgressContext from "../store/UserProgressContext";
 
@@ -25,13 +26,9 @@ const Cart = (props) => {
     <Modal className="cart" open={userProgressCtx.progress === "cart"}>
       <h2>Your Cart</h2>
       <ul>
-        {cartCtx.items.map((item) => {
-          return (
-            <li key={item.id}>
-              {item.name} - {item.quantity}
-            </li>
-          );
-        })}
+        {cartCtx.items.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
       </ul>
       <p className="cart-total">{priceFormatter.format(cartTotalPrice)}</p>
       <p className="modal-actions">
