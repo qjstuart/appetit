@@ -4,8 +4,10 @@ import CartContext from "../../store/CartContext";
 import logo from "../../assets/logo.jpg";
 import Button from "../UI/Button";
 import styles from "./Header.module.css";
+import UserProgressContext from "../../store/UserProgressContext";
 
 const Header = () => {
+  const userProgressCtx = useContext(UserProgressContext);
   const cartCtx = useContext(CartContext);
 
   // We want to go through all items in the items array and accumulate the total quantity.
@@ -16,13 +18,19 @@ const Header = () => {
     0
   );
 
+  function showCartHandler() {
+    userProgressCtx.showCart();
+  }
+
   return (
     <header id={styles["main-header"]}>
       <div id={styles.title}>
         <img src={logo} alt="ReactFood logo. Table laid for one." />
         <h1>Appétit</h1>
       </div>
-      <Button textButton>Cart ({totalCartItems})</Button>
+      <Button textButton onClick={showCartHandler}>
+        Cart ({totalCartItems})
+      </Button>
     </header>
   );
 };
