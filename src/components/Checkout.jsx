@@ -20,28 +20,51 @@ export default function Checkout() {
     userProgressCtx.hideCheckout();
   }
 
+  async function submitHandler(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const extractedFormData = Object.fromEntries(formData.entries());
+    console.log(extractedFormData);
+
+    // send POST to dummy backend /orders
+    try {
+      const response = await fetch("http://localhost:3000/orders", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          order: {
+            items: cartCtx.items,
+            customer: extractedFormData,
+          },
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(
+          `Error submitting order: Response not OK (${response.status})`
+        );
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return (
     <Modal
       open={userProgressCtx.progress === "checkout"}
       onClose={hideCheckoutHandler}
     >
-      <form>
+      <form onSubmit={submitHandler}>
         <h2>Checkout</h2>
         <p>Total Amount: {priceFormatter.format(cartTotalPrice)}</p>
         <p className="control">
-          <label htmlFor={"full-name"}>Full Name</label>
-          <input
-            id={"full-name"}
-            name={"full-name"}
-            type="text"
-            required
-          ></input>
+          <label htmlFor={"name"}>Full Name</label>
+          <input id={"name"} name={"name"} type="text" required></input>
         </p>
         <p className="control">
-          <label htmlFor={"email-address"}>Email Address</label>
+          <label htmlFor={"email"}>Email Address</label>
           <input
-            id={"email-address"}
-            name={"email-address"}
+            id={"email"}
+            name={"email"}
             type="email"
             required
           ></input>
@@ -52,12 +75,12 @@ export default function Checkout() {
         </p>
         <div className="control-row">
           <p className="control">
-            <label htmlFor={"post-code"}>Post Code</label>
-            <input id={"post-code"} name={"post-code"} type="text" required />
+            <label htmlFor={"postal-code"}>Post Code</label>
+            <input id={"postal-code"} name={"postal-code"} type="text" required />
           </p>
           <p className="control">
-            <label htmlFor={"town"}>Town</label>
-            <input id={"town"} name={"town"} required type="text" />
+            <label htmlFor={"city"}>Town</label>
+            <input id={"city"} name={"city"} required type="text" />
           </p>
         </div>
 
