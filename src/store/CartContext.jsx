@@ -25,14 +25,8 @@ function cartReducer(state, action) {
         quantity: existingItem.quantity + 1,
       };
       updatedItems[existingItemIndex] = updatedItem;
-    }
-    if (existingItemIndex === -1) {
-      // Item does not exist
-      const newItem = {
-        ...action.item,
-        quantity: 1,
-      };
-      // updatedItems.push(newItem);
+    } else {
+      // Item does not exist, create a new item
       updatedItems.push({ ...action.item, quantity: 1 });
     }
 
@@ -51,10 +45,11 @@ function cartReducer(state, action) {
     const updatedItems = [...state.items];
     const existingItem = state.items[existingItemIndex];
 
+    console.log("state.items: ", state.items);
+    console.log("existingItem: ", existingItem);
+
     if (existingItem.quantity === 1) {
-      updatedItems.filter((item) => {
-        item.id !== action.id;
-      });
+      updatedItems.splice(existingItemIndex, 1);
     } else {
       const updatedItem = {
         ...existingItem,
@@ -62,6 +57,18 @@ function cartReducer(state, action) {
       };
       updatedItems[existingItemIndex] = updatedItem;
     }
+
+    // if (existingItem.quantity === 1) {
+    //   updatedItems.filter((item) => {
+    //     item.id !== action.id;
+    //   });
+    // } else {
+    //   const updatedItem = {
+    //     ...existingItem,
+    //     quantity: existingItem.quantity - 1,
+    //   };
+    //   updatedItems[existingItemIndex] = updatedItem;
+    // }
 
     return {
       ...state,
