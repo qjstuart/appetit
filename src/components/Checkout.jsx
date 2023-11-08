@@ -5,6 +5,7 @@ import UserProgressContext from "../store/UserProgressContext";
 import Modal from "./UI/Modal";
 import { priceFormatter } from "../util/priceFormatter";
 import Button from "./UI/Button";
+import Input from "./UI/Input";
 
 export default function Checkout() {
   const cartCtx = useContext(CartContext);
@@ -56,44 +57,22 @@ export default function Checkout() {
       <form onSubmit={submitHandler}>
         <h2>Checkout</h2>
         <p>Total Amount: {priceFormatter.format(cartTotalPrice)}</p>
-        <p className="control">
-          <label htmlFor={"name"}>Full Name</label>
-          <input id={"name"} name={"name"} type="text" required></input>
-        </p>
-        <p className="control">
-          <label htmlFor={"email"}>Email Address</label>
-          <input
-            id={"email"}
-            name={"email"}
-            type="email"
-            required
-          ></input>
-        </p>
-        <p className="control">
-          <label htmlFor={"street"}>Street</label>
-          <input id={"street"} name={"street"} type="text" required></input>
-        </p>
+
+        <Input label="Full Name" id="name" type="text" />
+        <Input label="Email Address" id="email" type="email" />
+        <Input label="Street" id="street" type="text" />
+
         <div className="control-row">
-          <p className="control">
-            <label htmlFor={"postal-code"}>Post Code</label>
-            <input id={"postal-code"} name={"postal-code"} type="text" required />
-          </p>
-          <p className="control">
-            <label htmlFor={"city"}>Town</label>
-            <input id={"city"} name={"city"} required type="text" />
-          </p>
+          <Input
+            label="Post Code"
+            id="postal-code"
+            name="postal-code"
+            type="text"
+          />
+          <Input label="City" id="city" name="city" type="text" />
         </div>
 
-        <p className="modal-actions">
-          <Button
-            type="button"
-            textButton
-            onClick={userProgressCtx.hideCheckout}
-          >
-            Close
-          </Button>
-          <Button>Submit Order</Button>
-        </p>
+        <p className="modal-actions">{actions}</p>
       </form>
     </Modal>
   );
