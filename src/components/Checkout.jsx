@@ -7,6 +7,7 @@ import Modal from "./UI/Modal";
 import { priceFormatter } from "../util/priceFormatter";
 import Button from "./UI/Button";
 import Input from "./UI/Input";
+import Error from "./Error";
 
 const httpConfig = {
   method: "POST",
@@ -43,7 +44,6 @@ export default function Checkout() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const extractedFormData = Object.fromEntries(formData.entries());
-    console.log(extractedFormData);
 
     sendHttpRequestAndManageState(
       JSON.stringify({
@@ -53,26 +53,6 @@ export default function Checkout() {
         },
       })
     );
-    // send POST to dummy backend /orders
-    //   try {
-    //     const response = await fetch("http://localhost:3000/orders", {
-    //       method: "POST",
-    //       headers: { "Content-type": "application/json" },
-    //       body: JSON.stringify({
-    //         order: {
-    //           items: cartCtx.items,
-    //           customer: extractedFormData,
-    //         },
-    //       }),
-    //     });
-    //     if (!response.ok) {
-    //       throw new Error(
-    //         `Error submitting order: Response not OK (${response.status})`
-    //       );
-    //     }
-    //   } catch (error) {
-    //     console.error(error.message);
-    //   }
   }
 
   let actions = (
@@ -127,13 +107,10 @@ export default function Checkout() {
             name="postal-code"
             type="text"
           />
-          <Input
-            label="City"
-            id="city"
-            name="city"
-            type="text"
-          />
+          <Input label="City" id="city" name="city" type="text" />
         </div>
+
+        {error && <Error title="Error submitting order" message={error} />}
 
         <p className="modal-actions">{actions}</p>
       </form>
